@@ -96,7 +96,7 @@ function LineChartComponent({ClosingData, OpeningData, LowData, HighData, Predic
     responsive: true,
     plugins: {
       legend: {
-        position: 'left',
+        position: 'bottom',
       },
       tooltip: {
         callbacks: {
