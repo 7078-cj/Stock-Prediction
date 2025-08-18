@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend } from 'chart.js';
 import { Chart } from 'react-chartjs-2';
@@ -14,15 +14,47 @@ ChartJS.register(
   Legend
 );
 
-function LineChartComponent() {
+function LineChartComponent({ClosingData, OpeningData, LowData, HighData, PredictedClosingData}) {
+
+  const [openLowData, setOpenLowData] = useState(ClosingData.map((value, index) => {
+                                                  return [OpeningData[index], value]
+                                                })) 
+
+  
+
+  const [lowHighData, setLowHighData] = useState(LowData.map((value, index) => {
+                                                  return [value, HighData[index]]
+                                                }))
+ 
+
+  const [predictedData, setPredictedData] = useState([])
+
+  useEffect(() => {
+    setPredictedData(Array(ClosingData.length - 1).fill(null))
+    setPredictedData(prev => [...prev, ClosingData[ClosingData.length - 1],...PredictedClosingData])
+  },[ClosingData, PredictedClosingData])
+
+  useEffect(() => {
+    setOpenLowData(ClosingData.map((value, index) => {
+      return [OpeningData[index], value]
+    }))
+  }, [ClosingData, OpeningData]);
+
+  useEffect(() => {
+    setLowHighData(LowData.map((value, index) => {
+      return [value, HighData[index]]
+    }))
+  }, [LowData, HighData]);
+
+  
 
   const data = {
-    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July','August', 'September',, 'October', 'November', 'December'],
     datasets: [
       {
         type: 'line',
         label: 'Closing Price',
-        data: [65, 59, 80, 81, 56, 55, 40],
+        data: ClosingData,
         borderColor: 'rgb(75, 192, 192)',
         backgroundColor: 'rgba(75, 192, 192, 0.5)',
         tension: 0.1,
@@ -31,15 +63,7 @@ function LineChartComponent() {
       {
         type: 'bar',
         label: 'Opening – Closing Range',
-        data: [
-          [50, 65],
-          [40, 59],
-          [60, 80],
-          [20, 81],
-          [30, 56],
-          [10, 55],
-          [45, 40],
-        ],
+        data: openLowData,
         backgroundColor: 'rgba(192, 75, 75, 0.5)',
         borderColor: 'rgba(192, 75, 75, 1)',
         borderWidth: 1,
@@ -48,19 +72,23 @@ function LineChartComponent() {
       {
         type: 'bar',
         label: 'Monthly Low – High',
-        data: [
-          [45, 70],
-          [35, 65],
-          [55, 90],
-          [15, 85],
-          [25, 60],
-          [5, 58],
-          [35, 50],
-        ],
+        data: lowHighData,
         backgroundColor: 'rgba(0,0,0,0.1)', // transparent fill  
         borderWidth: 2,
         yAxisID: 'y',
+      },
+       
+      {
+        type: 'line',
+        label: 'Predicted Closing Price',
+        data: predictedData, 
+        borderColor: 'rgba(138, 43, 226, 1)',   // purple
+        backgroundColor: 'rgba(138, 43, 226, 0.3)',
+        borderDash: [6, 6], // dashed line
+        tension: 0.3,
+        yAxisID: 'y',
       }
+      
     ]
   };
 
@@ -68,7 +96,7 @@ function LineChartComponent() {
     responsive: true,
     plugins: {
       legend: {
-        position: 'top',
+        position: 'left',
       },
       tooltip: {
         callbacks: {
@@ -90,7 +118,7 @@ function LineChartComponent() {
   };
 
   return (
-    <div className='w-full h-96 bg-white p-4 shadow-md rounded-lg '>
+    <div className='w-full h-full bg-white p-4 shadow-md rounded-lg '>
       <Chart type='bar' data={data} options={options} />
     </div>
   )
