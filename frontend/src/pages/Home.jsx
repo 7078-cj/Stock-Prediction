@@ -1,8 +1,13 @@
 import React from 'react'
+import Header from '../components/Header'
+import LineChartComponent from '../components/LineChartComponent'
 
 function Home() {
   return (
-    <div className='bg-amber-300'>Home</div>
+    <>
+      <Header/>
+      <LineChartComponent/>
+    </>
   )
 }
 
