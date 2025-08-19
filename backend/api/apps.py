@@ -2,6 +2,8 @@ import os
 import tensorflow as tf
 from django.apps import AppConfig
 from django.conf import settings
+from sklearn.preprocessing import StandardScaler
+import pandas as pd
 
 class ApiConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
@@ -16,10 +18,18 @@ class ApiConfig(AppConfig):
 
        
         from . import model_holder
-
+        from .utils import fit_scaler
         
-        aapl_model_instance = model_holder.Model(self.aapl_model)
-        msft_model_instance = model_holder.Model(self.msft_model)
+        aapl_scaler_path = os.path.join(settings.BASE_DIR, "dataset", "AAPL_10y_OHLCV.csv")
+        msft_scaler_path = os.path.join(settings.BASE_DIR, "dataset", "MSFT_10y_OHLCV.csv")
+        
+        
+        scaler = StandardScaler()
+        aapl_scaler = fit_scaler(aapl_scaler_path, scaler)
+        msft_scaler = fit_scaler(msft_scaler_path, scaler)
+       
+        aapl_model_instance = model_holder.Model(self.aapl_model, aapl_scaler)
+        msft_model_instance = model_holder.Model(self.msft_model, msft_scaler)
 
         
         model_holder.models["AAPL"] = aapl_model_instance
