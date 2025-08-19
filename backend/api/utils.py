@@ -14,5 +14,16 @@ def fit_scaler(dataset_path,scaler=None):
     stock_data = stock_data.fillna(method='ffill')  
     stock_data = stock_data.dropna()
     dataset = stock_data.values
-    scaled_data = scaler.fit_transform(dataset)
-    return scaled_data
+    scaler = scaler.fit(dataset)
+    return scaler
+
+def data_prep(dataset):
+    cols = ['Open', 'High', 'Low', 'Close', 'Volume']
+    for col in cols:
+        dataset[col] = pd.to_numeric(dataset[col].str.replace(',', ''), errors='coerce')
+        
+    stock_data = dataset.filter(['Open', 'High', 'Low', 'Close'])
+    stock_data = stock_data.fillna(method='ffill')  
+    stock_data = stock_data.dropna()
+    
+    return stock_data.values

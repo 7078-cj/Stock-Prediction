@@ -1,5 +1,6 @@
 
 import numpy as np
+import pandas as pd
 
 
 models = {}
@@ -11,18 +12,14 @@ class Model:
         self.model = model
         self.scaler = scaler
         
-    def predict(self,ticker, input_data):
-        if ticker not in models:
-            return "Model for ticker not found"
+    def predict(self,input_data):
+        
         
         if input_data.shape[1] != 4:
             return "Input data must have 4 features"
         
         if input_data.shape[0] < 60:
             return "Input data must have at least 60 rows"
-        
-        
-        input_data = input_data.to_numpy(dtype=np.float32)
         
         
         scaled_input_data = self.scaler.transform(input_data)
@@ -36,7 +33,7 @@ class Model:
         dummy_array[:, 3] = prediction_scaled[:, 0]
         prediction = self.scaler.inverse_transform(dummy_array)[:, 3]
         
-        print(f'prediction {ticker}: {prediction}')
+        print(f'prediction : {prediction}')
         return prediction
 
         
