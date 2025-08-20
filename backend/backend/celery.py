@@ -20,6 +20,11 @@ app.conf.beat_schedule = {
         "schedule": crontab(hour=20, minute=10),  # 20:10 UTC
         "args": ("AAPL","60d", "1d"),
     },
+    "fetch_msft_after_close": {
+        "task": "api.tasks.fetch_stock_data",
+        "schedule": crontab(hour=20, minute=10),  # 20:10 UTC = ~4:10 p.m. ET
+        "args": ("MSFT", "60d", "1d"),
+    },
 }
 
 app.autodiscover_tasks()
