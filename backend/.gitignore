@@ -2,8 +2,6 @@
 db.sqlite3
 __pycache__/
 */__pycache__
-models/
 celerybeat-schedule.*
-dataset/
 migrations/
-current_data/
+

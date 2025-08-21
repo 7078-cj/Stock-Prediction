@@ -12,6 +12,6 @@ urlpatterns = [
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('register/', registerUser, name='register_user'),
     # path('test/', test, name='test'),
-    path('info/<str:ticker>/', info_prediction , name='info_prediction'),
+    path('info_prediction/<str:ticker>', info_prediction , name='info_prediction'),
     
 ]

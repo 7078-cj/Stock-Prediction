@@ -1,6 +1,15 @@
-import React, { useEffect, useState } from 'react'
-
-import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend } from 'chart.js';
+import React, { useMemo } from 'react';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+} from 'chart.js';
 import { Chart } from 'react-chartjs-2';
 
 ChartJS.register(
@@ -14,42 +23,29 @@ ChartJS.register(
   Legend
 );
 
-function LineChartComponent({ClosingData, OpeningData, LowData, HighData, PredictedClosingData}) {
-
-  const [openLowData, setOpenLowData] = useState(ClosingData.map((value, index) => {
-                                                  return [OpeningData[index], value]
-                                                })) 
+function LineChartComponent({ ClosingData, OpeningData, LowData, HighData, PredictedClosingData, Dates }) {
 
   
+  const openLowData = useMemo(() => 
+    ClosingData.map((close, idx) => [OpeningData[idx], close])
+  , [ClosingData, OpeningData]);
 
-  const [lowHighData, setLowHighData] = useState(LowData.map((value, index) => {
-                                                  return [value, HighData[index]]
-                                                }))
- 
+  const lowHighData = useMemo(() =>
+    LowData.map((low, idx) => [low, HighData[idx]])
+  , [LowData, HighData]);
 
-  const [predictedData, setPredictedData] = useState([])
+  const predictedData = useMemo(() => {
+    if (!ClosingData || ClosingData.length === 0) return [];
+    return [
+      ...Array(ClosingData.length - 1).fill(null),
+      ClosingData[ClosingData.length - 1],
+      PredictedClosingData
+    ];
+  }, [ClosingData, PredictedClosingData]);
 
-  useEffect(() => {
-    setPredictedData(Array(ClosingData.length - 1).fill(null))
-    setPredictedData(prev => [...prev, ClosingData[ClosingData.length - 1],...PredictedClosingData])
-  },[ClosingData, PredictedClosingData])
 
-  useEffect(() => {
-    setOpenLowData(ClosingData.map((value, index) => {
-      return [OpeningData[index], value]
-    }))
-  }, [ClosingData, OpeningData]);
-
-  useEffect(() => {
-    setLowHighData(LowData.map((value, index) => {
-      return [value, HighData[index]]
-    }))
-  }, [LowData, HighData]);
-
-  
-
-  const data = {
-    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July','August', 'September',, 'October', 'November', 'December'],
+  const data = useMemo(() => ({
+    labels: Dates,
     datasets: [
       {
         type: 'line',
@@ -73,55 +69,44 @@ function LineChartComponent({ClosingData, OpeningData, LowData, HighData, Predic
         type: 'bar',
         label: 'Monthly Low – High',
         data: lowHighData,
-        backgroundColor: 'rgba(0,0,0,0.1)', // transparent fill  
+        backgroundColor: 'rgba(0,0,0,0.1)',
         borderWidth: 2,
         yAxisID: 'y',
       },
-       
       {
         type: 'line',
         label: 'Predicted Closing Price',
-        data: predictedData, 
-        borderColor: 'rgba(138, 43, 226, 1)',   // purple
+        data: predictedData,
+        borderColor: 'rgba(138, 43, 226, 1)',
         backgroundColor: 'rgba(138, 43, 226, 0.3)',
-        borderDash: [6, 6], // dashed line
+        borderDash: [6, 6],
         tension: 0.3,
         yAxisID: 'y',
       }
-      
     ]
-  };
+  }), [Dates, ClosingData, openLowData, lowHighData, predictedData]);
 
-  const options = {
+  const options = useMemo(() => ({
     responsive: true,
     plugins: {
-      legend: {
-        position: 'bottom',
-      },
+      legend: { position: 'bottom' },
       tooltip: {
         callbacks: {
-          label: function (context) {
+          label: context => {
             const val = context.raw;
-            if (Array.isArray(val)) {
-              return `${val[0]} – ${val[1]}`;
-            }
-            return val;
+            return Array.isArray(val) ? `${val[0]} – ${val[1]}` : val;
           }
         }
       }
     },
-    scales: {
-      y: {
-        beginAtZero: true,
-      },
-    },
-  };
+    scales: { y: { beginAtZero: false } },
+  }), []);
 
   return (
-    <div className='w-full h-full bg-white p-4 shadow-md rounded-lg '>
+    <div className='w-full h-full bg-white p-4 shadow-md rounded-lg'>
       <Chart type='bar' data={data} options={options} />
     </div>
-  )
+  );
 }
 
-export default LineChartComponent
+export default LineChartComponent;
