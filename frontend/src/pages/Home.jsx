@@ -27,7 +27,7 @@ function Home() {
     <div className='flex flex-col h-screen'>
     
       <Header/>
-      <div className='flex flex-row h-full justify-self-start items-start'>
+      <div className='flex flex-row h-full justify-self-start items-start p-2'>
         <SideBar StockList={stockList} setIndex={setIndex} index={index} setIndexAndStock={setIndexAndStock}/>
         <StockPageComponent ticker={selectedStock.ticker}/>
       </div>

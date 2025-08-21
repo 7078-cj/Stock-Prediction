@@ -59,7 +59,7 @@ function StockPageComponent({ticker}) {
             })
                 .then(response => response.json())
                 .then(data => {
-                    console.log(data);
+                    
                     const formattedData = formatData(data);
                     formattedData.dates.push(addNextDay(formattedData.dates[formattedData.dates.length - 1]));
                     setStockData({
@@ -74,7 +74,7 @@ function StockPageComponent({ticker}) {
                         ticker: data.ticker
                     });
                     
-                    console.log(formattedData);
+                    
                     
                     
                 })
