@@ -49,7 +49,7 @@ function LineChartComponent({ ClosingData, OpeningData, LowData, HighData, Predi
     datasets: [
       {
         type: 'line',
-        label: 'Closing Price',
+        label: 'Daily Closing Price',
         data: ClosingData,
         borderColor: 'rgb(75, 192, 192)',
         backgroundColor: 'rgba(75, 192, 192, 0.5)',
@@ -58,7 +58,7 @@ function LineChartComponent({ ClosingData, OpeningData, LowData, HighData, Predi
       },
       {
         type: 'bar',
-        label: 'Opening – Closing Range',
+        label: 'Daily Opening – Closing Range',
         data: openLowData,
         backgroundColor: 'rgba(192, 75, 75, 0.5)',
         borderColor: 'rgba(192, 75, 75, 1)',
@@ -67,7 +67,7 @@ function LineChartComponent({ ClosingData, OpeningData, LowData, HighData, Predi
       },
       {
         type: 'bar',
-        label: 'Monthly Low – High',
+        label: 'Daily Low – High',
         data: lowHighData,
         backgroundColor: 'rgba(0,0,0,0.1)',
         borderWidth: 2,
