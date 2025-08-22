@@ -83,13 +83,15 @@ export function AuthProvider({children}) {
     };
 
     useEffect(() => {
-        let interval = setInterval(() => {
-            if (authTokens) {
-                updateToken();
-            }
-        }, 600000); // Refresh token every 10 minutes
+        if (!authTokens) return; 
+        
+        updateToken();
+        
+        const interval = setInterval(() => {
+            updateToken();
+        }, 600000);
 
-        return () => clearInterval(interval);
+        return () => clearInterval(interval); 
     }, [authTokens]);
 
     
