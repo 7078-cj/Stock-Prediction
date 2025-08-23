@@ -1,0 +1,19 @@
+FROM python:3.12-alpine
+
+ENV PYTHONUNBUFFERED 1
+
+WORKDIR /django
+
+COPY requirements.txt requirements.txt
+
+RUN pip install -r requirements.txt
+
+COPY . .
+
+EXPOSE 8000
+
+RUN chmod +x ./start.sh
+
+EXPOSE 8000
+
+CMD ["./start.sh"]

@@ -29,6 +29,10 @@ def info_prediction(request,ticker):
         latest_7 = data.tail(7)
         
         
-        return Response ({'info':latest_info, 'prediction':prediction, '7d_data':latest_7.to_dict(orient="records"), 'ticker': ticker, "all_predictions": [{"date":pred.prediction_date , "prediction": pred.predicted_value} for pred in all_predictions]})
+        return Response ({'info':latest_info, 
+                          'prediction':prediction, 
+                          '7d_data':latest_7.to_dict(orient="records"), 
+                          'ticker': ticker, 
+                          "all_predictions": [{"date":pred.prediction_date , "prediction": pred.predicted_value} for pred in all_predictions]})
     else:
         return Response({'error': 'Model not found'}, status=404)
