@@ -15,7 +15,7 @@ from ..models import Ticker
         
 
 @api_view(['GET'])
-
+@permission_classes([IsAuthenticated])
 def info_prediction(request,ticker):
     if request.method != 'GET':
         return Response({'error': 'Method not allowed'}, status=405)
