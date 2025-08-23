@@ -34,20 +34,20 @@ def registerUser(request):
             return Response({'message': 'User registered successfully'})
         return Response(serializer.errors, status=400)
 
-# @api_view(['GET'])
-# def test(request):
+@api_view(['GET'])
+def test(request):
     
-#     if request.method == 'GET':
-#         apple_model = model_holder.models.get("AAPL")
-#         aapl_dataset_path = os.path.join(settings.BASE_DIR, "dataset", "AAPL_10y_OHLCV.csv")
-#         aaple_data = pd.read_csv(aapl_dataset_path)
-#         latest_60 = aaple_data.tail(60)
-#         X_input = data_prep(latest_60)
-#         prediction = apple_model.predict(X_input)
-#         aaple_data_json = aaple_data.to_json(orient="records")
+    if request.method == 'GET':
+        apple_model = model_holder.models.get("AAPL")
+        aapl_dataset_path = os.path.join(settings.BASE_DIR, "dataset", "AAPL_10y_OHLCV.csv")
+        aaple_data = pd.read_csv(aapl_dataset_path)
+        latest_60 = aaple_data.tail(60)
+        X_input = data_prep(latest_60)
+        prediction = apple_model.predict(X_input)
+        aaple_data_json = aaple_data.to_json(orient="records")
         
         
         
     
-#         return Response({'prediction': prediction,
-#                          'dataset': aaple_data_json})
+        return Response({'prediction': prediction,
+                         'dataset': aaple_data_json})

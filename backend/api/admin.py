@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import ticker, StockPrediction
+from .models import Ticker, StockPrediction
 
-admin.site.register(ticker)
+admin.site.register(Ticker)
 admin.site.register(StockPrediction)

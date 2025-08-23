@@ -28,11 +28,11 @@ function StockPageComponent({ticker}) {
 
     const formatData = (data) => {
         return {
-            dates: data['60d_data'].map(item => item.Date),
-            close_data: data['60d_data'].map(item => item.Close),
-            open_data: data['60d_data'].map(item => item.Open),
-            low_data: data['60d_data'].map(item => item.Low),
-            high_data: data['60d_data'].map(item => item.High),
+            dates: data['7d_data'].map(item => item.Date),
+            close_data: data['7d_data'].map(item => item.Close),
+            open_data: data['7d_data'].map(item => item.Open),
+            low_data: data['7d_data'].map(item => item.Low),
+            high_data: data['7d_data'].map(item => item.High),
         };
     }
 

@@ -1,5 +1,8 @@
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
+from . import model_holder
+import os
+from django.conf import settings
 
 def fit_scaler(dataset_path,scaler=None):
     data = pd.read_csv(dataset_path)
@@ -27,3 +30,18 @@ def data_prep(dataset):
     stock_data = stock_data.dropna()
     
     return stock_data.values
+
+def predict_next_day(ticker):
+    print( ticker)
+    print(model_holder.models)
+    if ticker in model_holder.models:
+        model = model_holder.models.get(ticker)
+        dataset_path = os.path.join(settings.BASE_DIR, "current_data", f'{ticker}_60d_OHLCV.csv')
+        data = pd.read_csv(dataset_path)
+        latest_60 = data.tail(60)
+        X_input = data_prep(latest_60)
+        prediction = model.predict(X_input)
+        
+        return prediction
+    else:
+        raise ValueError(f"No model found for ticker: {ticker}")
