@@ -8,16 +8,21 @@ import {
   BarElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
+  LineController,
+  BarController
 } from 'chart.js';
-import { Chart } from 'react-chartjs-2';
+import { Chart,Line,Bar } from 'react-chartjs-2';
 
+// ✅ Register controllers, elements, scales, plugins
 ChartJS.register(
   CategoryScale,
   LinearScale,
   PointElement,
   LineElement,
   BarElement,
+  LineController,
+  BarController,
   Title,
   Tooltip,
   Legend
@@ -25,7 +30,6 @@ ChartJS.register(
 
 function LineChartComponent({ ClosingData, OpeningData, LowData, HighData, PredictedClosingData, Dates }) {
 
-  
   const openLowData = useMemo(() => 
     ClosingData.map((close, idx) => [OpeningData[idx], close])
   , [ClosingData, OpeningData]);
@@ -42,7 +46,6 @@ function LineChartComponent({ ClosingData, OpeningData, LowData, HighData, Predi
       PredictedClosingData
     ];
   }, [ClosingData, PredictedClosingData]);
-
 
   const data = useMemo(() => ({
     labels: Dates,

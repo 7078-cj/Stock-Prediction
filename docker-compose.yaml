@@ -24,6 +24,7 @@ services:
       - REDIS_PORT=6379
     env_file:
       - ./backend/.env
+    command: sh ./start.sh   
     depends_on:
       - redis
     

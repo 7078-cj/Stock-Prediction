@@ -33,7 +33,10 @@ SECRET_KEY = 'django-insecure-idwdc_ds5ohc3fqczskou7pkymbj5vew$s27qlvq8*)kx3k6(_
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = env.list(
+    "ALLOWED_HOSTS",
+    default=[]
+)
 
 
 # Application definition
@@ -205,19 +208,13 @@ CORS_ALLOW_CREDENTIALS = True
 redis_host = os.getenv("REDIS_HOST", None)  
 redis_port = int(os.getenv("REDIS_PORT", 6379))  
 
-if redis_host:
-    CHANNEL_LAYERS = {
+
+CHANNEL_LAYERS = {
         "default": {
             "BACKEND": "channels_redis.core.RedisChannelLayer",
             "CONFIG": {
                 "hosts": [f"redis://{redis_host}:{redis_port}/0"], 
             },
-        },
-    }
-else:
-    CHANNEL_LAYERS = {
-        "default": {
-            "BACKEND": "channels.layers.InMemoryChannelLayer",
         },
     }
 
